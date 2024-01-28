@@ -90,8 +90,8 @@ class QuizizzTextDataset(Dataset):
         question_text = self.df['question_text'][idx]
         option_text = self.df['option_text'][idx]
         questionId = self.df['questionId'][idx]
-        quiz_quality_score = self.df['quiz_quality_score'][idx]
-        return quiz_name, image_url, question_text, option_text, questionId, quiz_quality_score
+        image_quality_score = self.df['image_quality_score'][idx]
+        return quiz_name, image_url, question_text, option_text, questionId, image_quality_score
 
 
 def collate(batch):
@@ -119,7 +119,7 @@ def generate_data(dataset_key):
         dataset = QuizizzTextDataset()
         dataloader = DataLoader(dataset, batch_size=64, shuffle=False, collate_fn=collate)
         for batch in tqdm(dataloader):
-            quiz_name, image_url, question_text, option_text, questionId, quiz_quality_score = batch
+            quiz_name, image_url, question_text, option_text, questionId, image_quality_score = batch
             batch_size = len(questionId)
             for i in range(batch_size):
                 yield {
@@ -129,7 +129,7 @@ def generate_data(dataset_key):
                     "question_text": question_text[i],
                     "option_text": option_text[i],
                     "quiz_name": quiz_name[i],
-                    "question_quality_score": quiz_quality_score[i]
+                    "image_quality_score": image_quality_score[i]
                 }
 
 def main():
