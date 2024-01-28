@@ -108,14 +108,12 @@ quiz_quality AS (SELECT
 ))
 
 SELECT
-  quiz.quiz_name,
   q.media.url AS image,
-  questionText AS question_text,
-  option.text AS option_text,
-  option.media.url AS option_image,
-  q.type AS question_type,
-   MAX(q._id) AS questionId,
-  SUM(quiz_quality_score) AS quiz_quality_score
+  STRING_AGG(DISTINCT questionText, ' ') AS question_text,
+  STRING_AGG(DISTINCT option.text, ' ') AS option_text,
+  STRING_AGG(DISTINCT quiz.quiz_name, ' ') AS quiz_name,
+  MAX(q._id) AS questionId,
+  SUM(quiz_quality_score) AS image_quality_score
 FROM
   `analytics_v2.question3` AS q
 LEFT JOIN
@@ -137,4 +135,5 @@ WHERE
   AND qv.is_cloned IS FALSE
   AND qv.is_draft IS FALSE
   AND (q.media.type = 'image' AND questionText is NOT NULL AND LENGTH(TRIM(questionText)) > 0 ) 
-  GROUP BY 1, 2, 3, 4, 5, 6
+GROUP BY
+  image
