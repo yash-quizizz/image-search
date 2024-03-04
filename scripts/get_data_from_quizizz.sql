@@ -134,6 +134,8 @@ WHERE
   quiz.is_deleted IS FALSE
   AND qv.is_cloned IS FALSE
   AND qv.is_draft IS FALSE
+  AND is_public IS TRUE
   AND (q.media.type = 'image' AND questionText is NOT NULL AND LENGTH(TRIM(questionText)) > 0 ) 
+  AND quiz_language = "English" 
 GROUP BY
   image
